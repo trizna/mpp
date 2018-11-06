@@ -31,7 +31,7 @@
 #include "hal_h264e_rkv.h"
 #include "hal_h264e_vepu1.h"
 
-RK_U32 h264e_hal_log_mode = 0;
+RK_U32 h264e_hal_log_mode = H264E_DBG_DETAIL;
 
 MPP_RET hal_h264e_init(void *hal, MppHalCfg *cfg)
 {

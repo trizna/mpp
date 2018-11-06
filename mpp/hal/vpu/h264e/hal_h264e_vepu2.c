@@ -170,6 +170,11 @@ MPP_RET hal_h264e_vepu2_gen_regs(void *hal, HalTaskInfo *task)
     val = mpp_buffer_get_size(enc_task->output);
     val >>= 3;
     val &= ~7;
+    h264e_hal_dbg(H264E_DBG_DETAIL, "orig VEPU_REG_STR_BUF_LIMIT =  %d ", val);
+    if (val > (680 * 8)) {
+      val = 680 * 8;
+    }
+    h264e_hal_dbg(H264E_DBG_DETAIL, "new VEPU_REG_STR_BUF_LIMIT =  %d ", val);
     H264E_HAL_SET_REG(reg, VEPU_REG_STR_BUF_LIMIT, val);
 
     /*
@@ -485,6 +490,7 @@ static MPP_RET h264e_vpu_set_feedback(h264e_feedback *fb, H264eVpu2RegSet *reg)
     fb->mad_count = (reg_val[VEPU_REG_MB_CTRL / 4] >> 16) & 0xffff;
     fb->rlc_count = reg_val[VEPU_REG_RLC_SUM / 4] & 0x3fffff;
     fb->out_strm_size = reg_val[VEPU_REG_STR_BUF_LIMIT / 4] / 8;
+    h264e_hal_dbg(H264E_DBG_DETAIL, "fb->out_strm_size =  %d ", fb->out_strm_size);
 
     for (i = 0; i < CHECK_POINTS_MAX; i++) {
         RK_U32 cpt = VEPU_REG_CHECKPOINT_RESULT(reg_val[cpt_idx]);
